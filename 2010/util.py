@@ -1,9 +1,53 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
-# @Time      : 2019-02-8
+# @Time      : 2019-02-9
 # @Author    : evi
 # @Comment   : utilities
 # @File      : util.py
+
+# Check each colum's length same as the others
+def checkColums(cols):
+    lls = []
+    for x in cols:
+        lls.append(len(x))
+    if len(set(lls)) == 1:
+        return True
+    return False
+
+# Combine colums and wirte to CSV file
+def writeCSVFromColums(filename, cols):
+    if not checkColums(cols):
+        return False
+    with open(filename, 'w+') as fp:
+        lines = len(cols[0])
+        for c in range(lines):
+            buf = ''
+            for x in cols:
+                buf += str(x[c])
+                buf += ','
+            fp.write(buf[:-1])
+            fp.write('\n')
+    return True
+
+# If the string end with '\n', delete '\n'
+def noEndlineSymbol(s):
+    if s[-1:] == '\n':
+        return s[:-1]
+    else:
+        return s
+
+# Scan CSV file, using one colum as condition...
+def scanCSVRecordByOneColum(filename, ls, cid):
+    rec = []
+    with open(filename, 'r') as fp:
+        raw = fp.readline()
+        while raw:
+            print(raw)
+            rawls = raw.split(',')
+            if rawls[cid] in ls:
+                rec.append(noEndlineSymbol(raw))
+            raw = fp.readline()
+    return rec
 
 # Convert all string items in list to integers
 def listStrToInt(l):

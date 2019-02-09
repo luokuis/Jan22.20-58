@@ -32,9 +32,9 @@ print('Looking for missing fids...')
 missFids = []
 
 for x in fIdsFromPeopleInfo:
-	if not x in fIdsFromFamInfo:
-		if not x in missFids: # Will not append duplicate fid
-			missFids.append(x)
+    if not x in fIdsFromFamInfo:
+        if not x in missFids: # Will not append duplicate fid
+            missFids.append(x)
 
 print('共计 %d 个 fid 在 个人信息中出现而未在家庭信息中出现'%len(missFids))
 
@@ -43,11 +43,11 @@ print('个人信息中含有 %d 个 fid，'%len(set(fIdsFromPeopleInfo)))
 
 print('数据校验...')
 if len(missFids) == len(set(fIdsFromPeopleInfo)) - len(set(fIdsFromFamInfo)):
-	print('数据校验成功')
-	with open(exportJsonFile, 'w+') as fp:
-		s = json.dumps(missFids)
-		fp.write(s)
-	print('保存 fid 到文件 %s'%exportJsonFile)
+    print('数据校验成功')
+    with open(exportJsonFile, 'w+') as fp:
+        s = json.dumps(missFids)
+        fp.write(s)
+    print('保存 fid 到文件 %s'%exportJsonFile)
 else:
-	print('数据校验错误： 家庭信息数据中含有个人信息数据中未出现的 fid')
-	
+    print('数据校验错误： 家庭信息数据中含有个人信息数据中未出现的 fid')
+    
