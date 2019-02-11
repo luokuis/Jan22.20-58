@@ -5,21 +5,28 @@
 # @Comment   : 查找在个人信息中出现但是未在家庭信息中出现的 fid
 # @File      : PeopleNotInFam.py
 
+import sys
 import util
 import json
 
-exportJsonFile = 'PeopleNotInFam.fid.json'
-famInfoFile    = 'cfps2010family_report_nat092014.dta.csv'
-peopleInfoFile = 'cfps2010famconf_report_nat092014.csv'
+try:
+    famInfoFile    = sys.argv[1]
+    famFidCol      = int(sys.argv[2])
+    peopleInfoFile = sys.argv[3]
+    peopleFidCol   = int(sys.argv[4])
+    exportJsonFile = sys.argv[5]
+except:
+	print('Error: Arg Ill')
+    exit(-1)
 
 # Read all fids from family info
 print('Reading %s...'%famInfoFile)
-fIdsFromFamInfo    = util.readCSVColums(famInfoFile, cols=[0])[0]
+fIdsFromFamInfo    = util.readCSVColums(famInfoFile, cols=[famFidCol])[0]
 print('Reading %s finished'%famInfoFile)
 
 # Read all fids from family info
 print('Reading %s...'%peopleInfoFile)
-fIdsFromPeopleInfo = util.readCSVColums(peopleInfoFile, cols=[1])[0]
+fIdsFromPeopleInfo = util.readCSVColums(peopleInfoFile, cols=[peopleFidCol])[0]
 print('Reading %s finished'%peopleInfoFile)
 
 # Convert strings in list to integers
@@ -45,8 +52,7 @@ print('数据校验...')
 if len(missFids) == len(set(fIdsFromPeopleInfo)) - len(set(fIdsFromFamInfo)):
     print('数据校验成功')
     with open(exportJsonFile, 'w+') as fp:
-        s = json.dumps(missFids)
-        fp.write(s)
+        fp.write(json.dumps(missFids))
     print('保存 fid 到文件 %s'%exportJsonFile)
 else:
     print('数据校验错误： 家庭信息数据中含有个人信息数据中未出现的 fid')
