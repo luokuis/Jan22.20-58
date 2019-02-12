@@ -37,22 +37,28 @@ def noEndlineSymbol(s):
         return s
 
 # Scan CSV file, using one colum as condition...
-def scanCSVRecordByOneColum(filename, ls, cid):
+def scanCSVRecordByOneColum(filename, ls, cid, tableHead=False, decode='GBK'):
     rec = []
-    with open(filename, 'r') as fp:
-        raw = fp.readline()
+    with open(filename, 'rb') as fp:
+        if not tableHead:
+            fp.readline().decode(decode)
+        raw = fp.readline().decode(decode)
         while raw:
-            print(raw)
             rawls = raw.split(',')
             if rawls[cid] in ls:
                 rec.append(noEndlineSymbol(raw))
-            raw = fp.readline()
+            raw = fp.readline().decode(decode)
     return rec
 
 # Convert all string items in list to integers
 def listStrToInt(l):
     for x in range(len(l)):
         l[x] = int(l[x])
+
+# Convert all integers items in list to string
+def listIntToStr(l):
+    for x in range(len(l)):
+        l[x] = str(l[x])
 
 # Read some colums from csv file
 def readCSVColums(filename, tableHead=False, cols=None, decode='GBK'):
