@@ -16,7 +16,7 @@ try:
     peopleFidCol   = int(sys.argv[4])
     exportJsonFile = sys.argv[5]
 except:
-	print('Error: Arg Ill')
+    print('Error: Arg Ill')
     exit(-1)
 
 # Read all fids from family info
