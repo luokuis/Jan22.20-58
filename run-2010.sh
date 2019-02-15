@@ -7,9 +7,10 @@ echo $choice
 if [[ $choice == y ]]; then
 	family=2010/cfps2010family_report_nat092014.dta.csv
 	people=2010/cfps2010famconf_report_nat092014.csv
+	fidColName=fid
 	exportFile=PeopleNotInFam2010.fid.json
 
-	python ./src/PeopleNotInFam.py $family $people $exportFile
+	python ./src/PeopleNotInFam.py $family $people $fidColName $exportFile
 fi
 
 echo

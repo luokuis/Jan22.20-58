@@ -10,9 +10,10 @@ import pandas as pd
 import json
 
 try:
-    familyInfoFile    = sys.argv[1]
+    familyInfoFile = sys.argv[1]
     peopleInfoFile = sys.argv[2]
-    exportJsonFile = sys.argv[3]
+    fidColName     = sys.argv[3]
+    exportJsonFile = sys.argv[4]
 except:
     print('Error: Arg Ill')
     exit(-1)
@@ -28,8 +29,8 @@ print('Reading %s finished'%peopleInfoFile)
 FidsNotInFamilyData = []
 
 print('Data Converting...')
-UniqFidsInPeople = list(set(PeopleData['fid']))
-UniqFidsInFamily = list(set(FamData['fid']))
+UniqFidsInPeople = list(set(PeopleData[fidColName]))
+UniqFidsInFamily = list(set(FamData[fidColName]))
 
 print('Looking for missing fids...')
 for fid in UniqFidsInPeople:
