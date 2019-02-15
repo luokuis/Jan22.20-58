@@ -6,54 +6,47 @@
 # @File      : PeopleNotInFam.py
 
 import sys
-import util
+import pandas as pd
 import json
 
 try:
-    famInfoFile    = sys.argv[1]
-    famFidCol      = int(sys.argv[2])
-    peopleInfoFile = sys.argv[3]
-    peopleFidCol   = int(sys.argv[4])
-    exportJsonFile = sys.argv[5]
+    familyInfoFile    = sys.argv[1]
+    peopleInfoFile = sys.argv[2]
+    exportJsonFile = sys.argv[3]
 except:
     print('Error: Arg Ill')
     exit(-1)
 
-# Read all fids from family info
-print('Reading %s...'%famInfoFile)
-fIdsFromFamInfo    = util.readCSVColums(famInfoFile, cols=[famFidCol])[0]
-print('Reading %s finished'%famInfoFile)
+print('Reading %s...'%familyInfoFile)
+FamData = pd.read_csv(familyInfoFile, low_memory=False, encoding='GBK')
+print('Reading %s finished'%familyInfoFile)
 
-# Read all fids from family info
 print('Reading %s...'%peopleInfoFile)
-fIdsFromPeopleInfo = util.readCSVColums(peopleInfoFile, cols=[peopleFidCol])[0]
+PeopleData = pd.read_csv(peopleInfoFile, low_memory=False, encoding='GBK')
 print('Reading %s finished'%peopleInfoFile)
 
-# Convert strings in list to integers
+FidsNotInFamilyData = []
+
 print('Data Converting...')
-util.listStrToInt(fIdsFromFamInfo)
-util.listStrToInt(fIdsFromPeopleInfo)
+UniqFidsInPeople = list(set(PeopleData['fid']))
+UniqFidsInFamily = list(set(FamData['fid']))
 
-# The missing fids
 print('Looking for missing fids...')
-missFids = []
+for fid in UniqFidsInPeople:
+    if not fid in UniqFidsInFamily and not fid in FidsNotInFamilyData:
+        FidsNotInFamilyData.append(fid)
+FidsNotInFamilyData.sort()
 
-for x in fIdsFromPeopleInfo:
-    if not x in fIdsFromFamInfo:
-        if not x in missFids: # Will not append duplicate fid
-            missFids.append(x)
+print('共计 %d 个 fid 在 个人信息中出现而未在家庭信息中出现'%len(FidsNotInFamilyData))
 
-print('共计 %d 个 fid 在 个人信息中出现而未在家庭信息中出现'%len(missFids))
-
-print('家庭信息中含有 %d 个 fid，'%len(set(fIdsFromFamInfo)))
-print('个人信息中含有 %d 个 fid，'%len(set(fIdsFromPeopleInfo)))
+print('家庭信息中含有 %d 个 fid，'%len(UniqFidsInFamily))
+print('个人信息中含有 %d 个 fid，'%len(UniqFidsInPeople))
 
 print('数据校验...')
-if len(missFids) == len(set(fIdsFromPeopleInfo)) - len(set(fIdsFromFamInfo)):
+if len(FidsNotInFamilyData) == len(UniqFidsInPeople) - len(UniqFidsInFamily):
     print('数据校验成功')
     with open(exportJsonFile, 'w+') as fp:
-        fp.write(json.dumps(missFids))
+        fp.write(json.dumps(FidsNotInFamilyData))
     print('保存 fid 到文件 %s'%exportJsonFile)
 else:
     print('数据校验错误： 家庭信息数据中含有个人信息数据中未出现的 fid')
-    
