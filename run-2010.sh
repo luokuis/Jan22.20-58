@@ -1,7 +1,7 @@
 #! /usr/bin/bash
 
 echo 查找所有出现在个人信息数据中但是未出现在家庭信息数据中的 fid
-read -p "是否进行操作，输入 y 进行操作，否则跳过(y/n): " choice
+read -p "是否进行操作，输入 y 进行操作(y/n): " choice
 echo $choice
 
 if [[ $choice == y ]]; then
@@ -18,7 +18,7 @@ echo ------------------ 我是分割线 ------------------
 echo
 
 echo 将所有出现在个人信息数据中但是未出现在家庭信息数据中的个人信息保存到 CSV 文件
-read -p "是否进行操作，输入 y 进行操作，否则跳过(y/n): " choice
+read -p "是否进行操作，输入 y 进行操作(y/n): " choice
 echo $choice
 
 if [[ $choice == y ]]; then
