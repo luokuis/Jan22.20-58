@@ -20,9 +20,6 @@ except:
     print('Error: Arg Ill')
     exit(-1)
 
-File_PREV = '2010/cfps2010famconf_report_nat092014.csv'
-File_CURR = '2012/cfps2012family_092015.csv'
-
 print('Reading %s...'%File_PREV)
 Data_PREV = pd.read_csv(File_PREV, low_memory=False, encoding='GBK')
 print('Reading %s finished'%File_PREV)

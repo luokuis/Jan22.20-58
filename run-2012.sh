@@ -22,8 +22,8 @@ read -p "是否进行操作，输入 y 进行操作(y/n): " choice
 echo $choice
 
 if [[ $choice == y ]]; then
-	people10=2012/cfps2012famros_092015.csv
-	people12=2012/cfps2012famros_092015.csv
+	people10=2010/cfps2010famconf_report_nat092014.csv
+	people12=2012/cfps2012family_092015.csv
 	fidColName10=fid
 	fidColName12=fid12
 	exportFile=MissFids2010-2012.fid.json
