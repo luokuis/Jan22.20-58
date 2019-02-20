@@ -20,6 +20,8 @@ except:
     print('Error: Arg Ill')
     exit(-1)
 
+illFid = set([-8])
+
 print('Reading %s...'%File_PREV)
 Data_PREV = pd.read_csv(File_PREV, low_memory=False, encoding='GBK')
 print('Reading %s finished'%File_PREV)
@@ -29,12 +31,14 @@ Data_CURR = pd.read_csv(File_CURR, low_memory=False, encoding='GBK')
 print('Reading %s finished'%File_CURR)
 
 print('Extracting %s in %s...'%(ColName_CURR, File_CURR))
-sfid_CURR = set(Data_CURR['fid10'])
+sfid_CURR = set(Data_CURR[ColName_CURR]) - illFid
 
 print('Extracting %s in %s...'%(ColName_PREV, File_PREV))
-sfid_PREV = set(Data_PREV['fid'])
+sfid_PREV = set(Data_PREV[ColName_PREV]) - illFid
+
 
 missFids = sfid_PREV - sfid_CURR
+
 if len(sfid_PREV) - len(sfid_CURR) == len(missFids):
     print('发现 %d 个流失的 fid'%len(missFids))
     print('数据校验成功')
@@ -47,3 +51,4 @@ else:
 with open(exportJsonFile, 'w+') as fp:
     fp.write(json.dumps(list(missFids)))
     print('保存 fid 到文件 %s'%exportJsonFile)
+    

@@ -22,11 +22,45 @@ read -p "是否进行操作，输入 y 进行操作(y/n): " choice
 echo $choice
 
 if [[ $choice == y ]]; then
+	people12=2012/cfps2012famros_092015.csv
 	people10=2010/cfps2010famconf_report_nat092014.csv
-	people12=2012/cfps2012family_092015.csv
 	fidColName10=fid
-	fidColName12=fid12
+	fidColName12=fid10
 	exportFile=MissFids2010-2012.fid.json
 
 	python ./src/ListMissFids.py $people12 $people10 $fidColName12 $fidColName10 $exportFile
+fi
+
+echo
+echo ------------------ 我是分割线 ------------------
+echo
+
+echo 列出 2010 年到 2012 流失的人
+read -p "是否进行操作，输入 y 进行操作(y/n): " choice
+echo $choice
+
+if [[ $choice == y ]]; then
+	keyFile=MissFids2010-2012.fid.json
+	people10=2010/cfps2010famconf_report_nat092014.csv
+	fidColId=1
+	exportFile=MissPeople2010-2012.csv
+
+	python ./src/ScanCSVBySingleColum.py $keyFile $people10 $fidColId $exportFile
+fi
+
+echo
+echo ------------------ 我是分割线 ------------------
+echo
+
+echo 列出 2010 年到 2012 流失的家庭
+read -p "是否进行操作，输入 y 进行操作(y/n): " choice
+echo $choice
+
+if [[ $choice == y ]]; then
+	keyFile=MissFids2010-2012.fid.json
+	people10=2010/cfps2010family_report_nat092014.dta.csv
+	fidColId=0
+	exportFile=MissFamily2010-2012.csv
+
+	python ./src/ScanCSVBySingleColum.py $keyFile $people10 $fidColId $exportFile
 fi
