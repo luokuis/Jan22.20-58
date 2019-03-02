@@ -47,7 +47,10 @@ else:
         (File_CURR, len(sfid_CURR), ColName_CURR, File_PREV, len(sfid_PREV),
             ColName_PREV, len(missFids)))
     print('数据校验错误')
-    exit(-2)
+    lsx = list(sfid_CURR - sfid_PREV)
+    with open(exportJsonFile + '.chk.json', 'w+') as fp:
+        fp.write(json.dumps(lsx))
+    # exit(-2)
 with open(exportJsonFile, 'w+') as fp:
     fp.write(json.dumps(list(missFids)))
     print('保存 fid 到文件 %s'%exportJsonFile)
